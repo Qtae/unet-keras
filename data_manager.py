@@ -85,3 +85,14 @@ def load_data(dataset_path_list, img_size, valid_split):
   valid_label_arr = np.array(valid_label_list).astype(np.float32)/ 1.
   
   return train_img_arr, train_label_arr, valid_img_arr, valid_label_arr
+
+def monitor_dataset(images, labels):
+  for (img,lbl) in zip(images, labels):
+    cv2.imshow("img",img) 
+    lbl = lbl * 255
+    cv2.imshow("lbl",lbl) 
+    key = cv2.waitKey(0)
+    if key == 27:
+      break
+  cv2.destroyAllWindows()
+    
