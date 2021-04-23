@@ -10,9 +10,7 @@ from data_manager import *
 if __name__ == '__main__':
   ## load data ###########################################################
   train_dir = 'D:\\Work\\04_PGM\\Data\\ScratchSegmentationData\\0_Train'
-
   trainset_path_list = get_dataset_path_list(train_dir)
-
   train_images, train_labels, valid_images, valid_labels = load_data(trainset_path_list, (192, 192), 0.2)
   
   print(train_images.shape)
@@ -26,8 +24,9 @@ if __name__ == '__main__':
   model = unet(input)
 
   adam = tf.keras.optimizers.Adam(learning_rate=0.0001)
+  bce = tf.keras.losses.BinaryCrossentropy(from_logits=False)
   model.compile(optimizer=adam,
-                loss=tf.keras.losses.BinaryCrossentropy(from_logits=False),
+                loss=bce,
                 metrics=[tf.keras.metrics.MeanIoU(num_classes=2), 'accuracy'])
   model.summary()
 
