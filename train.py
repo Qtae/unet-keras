@@ -1,5 +1,6 @@
 import os
 import time
+import argparse
 
 import tensorflow as tf
 
@@ -8,8 +9,14 @@ from data_manager import *
 
 
 if __name__ == '__main__':
+  ## parsing ###########################################################
+  parser = argparse.ArgumentParser()
+  parser.add_argument('train_dir', type=str, help='train dataset directory')
+  parser.add_argument('ckpt_dir', type=str, help='checkpoint save directory')
+  args = parser.parse_args()
+
   ## load data ###########################################################
-  train_dir = 'D:\\Work\\04_PGM\\Data\\ScratchSegmentationData\\0_Train'
+  train_dir = args.train_dir
   trainset_path_list = get_dataset_path_list(train_dir)
   train_images, train_labels, valid_images, valid_labels = load_data(trainset_path_list, (192, 192), 0.2)
   
@@ -31,7 +38,7 @@ if __name__ == '__main__':
   model.summary()
 
   ## callback functions ########################################
-  savedir = os.path.join("D:\\Work\\04_PGM\\unet\\checkpoints", time.strftime('model_%Y%m%d%H%M%S', time.localtime(time.time())))
+  savedir = os.path.join(args.ckpt_dir, time.strftime('model_%Y%m%d%H%M%S', time.localtime(time.time())))
   if not os.path.exists(savedir):
     os.makedirs(savedir)
   filename = "SEG_e{epoch:02d}-acc{val_accuracy:.3f}.hdf5"
